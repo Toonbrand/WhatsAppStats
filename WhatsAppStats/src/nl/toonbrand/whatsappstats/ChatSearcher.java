@@ -320,8 +320,8 @@ public class ChatSearcher {
 	}
 
 	public static String cleanLine(String line){
-		line=line.replace("‪", "");
-		line=line.replace("‬", "");
+		line=line.replaceAll("[^\\p{Print}]", "");
+		line=line.replaceAll("\\p{C}", "");
 		return line;
 	}
 
