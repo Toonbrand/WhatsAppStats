@@ -16,17 +16,24 @@ import java.util.Scanner;
  */
 public class ChatSearcher {
 	static Person allMessages = new Person("allMessages");
+	static Person notifications = new Person("notifications");
 	static ArrayList<Person> persons = new ArrayList<>();
 	static DecimalFormat df = new DecimalFormat("#.##");
 
 	public static void main(String[] args) {
 		final long loadTime = System.currentTimeMillis();
 
-		String fileLoc = "Sources/WhatsApp_Chat_keesdag.txt";
+		String fileLoc = "Sources/WhatsApp_Chat_Anonieme_Alcoholisten.txt";
+//		String fileLoc = "Sources/WhatsApp_Chat_Gian.txt";
+//		String fileLoc = "Sources/WhatsApp_Chat_keesdag.txt";
 		createFilledPersonen(fileLoc);
 
 		final long endLoadTime = System.currentTimeMillis();
 
+		for(Message m : notifications.messages){
+			System.out.println(m.content);
+		}
+		
 		mostMessages(persons);
 		df.setRoundingMode(RoundingMode.HALF_EVEN);
 		Scanner s = new Scanner(System.in);
@@ -48,6 +55,8 @@ public class ChatSearcher {
 		else{
 			findExpressionsForUser(popWords.get(0), caseSensitive, wholeWord);
 		}
+		
+		
 
 		final long endSearchTime = System.currentTimeMillis();
 		System.out.println("\n[File loading took: " + (endLoadTime - loadTime) + "ms]");
@@ -90,6 +99,12 @@ public class ChatSearcher {
 								break;
 							}
 						}
+					}
+					else{
+						String date = line.substring(1,10);
+						String time = line.substring(12,17);
+						String content = line.substring(20,line.length());
+						notifications.addMessage(new Message(content, date, time, notifications));
 					}
 				}
 			}
@@ -315,13 +330,12 @@ public class ChatSearcher {
 	}
 
 	public static String getNameFromMessage(String line){
-		String name = line.substring(20, (line.indexOf(": ")));
-		return name;
+		return line.substring(20, line.indexOf(": "));
 	}
 
 	public static String cleanLine(String line){
-		line=line.replaceAll("[^\\p{Print}]", "");
-		line=line.replaceAll("\\p{C}", "");
+//		line=line.replaceAll("[^\\p{Print}]", "");
+//		line=line.replaceAll("\\p{C}", "");
 		return line;
 	}
 

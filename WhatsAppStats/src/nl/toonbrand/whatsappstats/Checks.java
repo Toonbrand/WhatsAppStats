@@ -4,12 +4,17 @@ import java.util.Scanner;
 
 public class Checks {
 
+	//this method is horrible and I should feel horrible for making it like this
 	public static boolean isActualMessage(String line){
 		if(line.substring(20).equalsIgnoreCase("Messages you send to this chat and calls are now secured with end-to-end encryption. Tap for more info.") || 
 				line.substring(20).equalsIgnoreCase("Messages you send to this group are now secured with end-to-end encryption. Tap for more info.") ||
 				line.contains(" created group ") ||
 				line.contains(" added ") ||
-				(line.contains(" changed the subject from ") && line.contains(" to ")) ||
+				line.contains(" removed ") ||
+				line.contains(" left") ||
+				line.contains(" changed the subject to ") ||
+				line.contains(" changed the subject from ") ||
+				line.contains(" deleted this group's icon") ||
 				line.contains(" changed this group's icon")){
 			return false;
 		}
